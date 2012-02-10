@@ -7,7 +7,6 @@ using System;
 using System.Reflection;
 using System.Runtime.Remoting;
 using System.Threading;
-using System.Threading.Tasks;
 using Lokad.Cloud.AppHost.Framework;
 using Lokad.Cloud.AppHost.Framework.Definition;
 using Lokad.Cloud.AppHost.Framework.Instrumentation.Events;
@@ -28,6 +27,7 @@ namespace Lokad.Cloud.AppHost
         private readonly IHostContext _hostContext;
         private readonly Action<IHostCommand> _sendCommand;
 
+        private volatile Thread _thread;
         private volatile CellAppDomainEntryPoint _entryPoint;
         private volatile CellDefinition _cellDefinition;
         private volatile SolutionHead _deployment;
@@ -56,8 +56,6 @@ namespace Lokad.Cloud.AppHost
             return process;
         }
 
-        public Task Task { get; private set; }
-
         /// <summary>
         /// Shutdown just this cell. Use the Task property to wait for the shutdown to complete if needed.
         /// </summary>
@@ -66,13 +64,28 @@ namespace Lokad.Cloud.AppHost
             _cancellationTokenSource.Cancel();
         }
 
+        /// <summary>
+        /// Ensure this cell is either still alive, or cancelled.
+        /// </summary>
+        public void EnsureIsRunningUnlessCancelled()
+        {
+            if (_cancellationTokenSource.Token.IsCancellationRequested)
+            {
+                return;
+            }
+
+            var thread = _thread;
+            if (thread == null || !thread.IsAlive)
+            {
+                _hostContext.Observer.TryNotify(() => new CellDeadRestartedEvent(_hostContext.Identity, _cellName, _solutionName));
+                Run();
+            }
+        }
+
         void Run()
         {
             var cancellationToken = _cancellationTokenSource.Token;
-            var completionSource = new TaskCompletionSource<object>();
-            Task = completionSource.Task;
-
-            var thread = new Thread(() =>
+            _thread = new Thread(() =>
                 {
                     var currentRoundStartTime = DateTimeOffset.UtcNow - FloodFrequencyThreshold;
                     while (!cancellationToken.IsCancellationRequested)
@@ -153,12 +166,10 @@ namespace Lokad.Cloud.AppHost
                             AppDomain.Unload(domain);
                         }
                     }
-
-                    completionSource.TrySetCanceled();
                 });
 
-            thread.Name = "Lokad.Cloud AppHost Cell (" +_cellName + ")";
-            thread.Start();
+            _thread.Name = "Lokad.Cloud AppHost Cell (" + _cellName + ")";
+            _thread.Start();
         }
 
         public void OnCellDefinitionChanged(CellDefinition newCellDefinition, SolutionHead newDeployment)

@@ -25,6 +25,8 @@ namespace Lokad.Cloud.AppHost
 
         private readonly int _autoLoadHeadDeploymentIntervalMs;
         private readonly Timer _autoLoadHeadDeploymentTimer;
+        private const int _watchdogIntervalMs = 15000;
+        private readonly Timer _watchdogTimer;
 
         private string _currentDeploymentEtag;
         private SolutionHead _currentDeployment;
@@ -39,6 +41,7 @@ namespace Lokad.Cloud.AppHost
 
             _autoLoadHeadDeploymentIntervalMs = autoLoadHeadDeploymentIntervalMs;
             _autoLoadHeadDeploymentTimer = new Timer(o => _commandQueue.Add(new LoadCurrentHeadDeploymentCommand()), null, Timeout.Infinite, _autoLoadHeadDeploymentIntervalMs);
+            _watchdogTimer = new Timer(o => _commandQueue.Add(new EnsureAllCellsAreRunningUnlessCancelledCommand()), null, Timeout.Infinite, _watchdogIntervalMs);
         }
 
         public void RunSync(CancellationToken cancellationToken)
@@ -52,6 +55,7 @@ namespace Lokad.Cloud.AppHost
                 _currentDeploymentEtag = null;
 
                 _autoLoadHeadDeploymentTimer.Change(0, _autoLoadHeadDeploymentIntervalMs);
+                _watchdogTimer.Change(_watchdogIntervalMs, _watchdogIntervalMs);
 
                 foreach (var command in _commandQueue.GetConsumingEnumerable(cancellationToken))
                 {
@@ -61,6 +65,7 @@ namespace Lokad.Cloud.AppHost
             finally
             {
                 _autoLoadHeadDeploymentTimer.Change(Timeout.Infinite, _autoLoadHeadDeploymentIntervalMs);
+                _watchdogTimer.Change(Timeout.Infinite, _watchdogIntervalMs);
                 _hostContext.Observer.TryNotify(() => new HostStoppedEvent(_hostContext.Identity));
             }
         }
@@ -109,6 +114,11 @@ namespace Lokad.Cloud.AppHost
         public void LoadHeadDeployment()
         {
             _commandQueue.Add(new LoadCurrentHeadDeploymentCommand());
+        }
+
+        public void EnsureAllCellsAreRunningUnlessCancelled()
+        {
+            _commandQueue.Add(new EnsureAllCellsAreRunningUnlessCancelledCommand());
         }
 
         void Do(LoadCurrentHeadDeploymentCommand command, CancellationToken cancellationToken)
@@ -165,6 +175,19 @@ namespace Lokad.Cloud.AppHost
             }
         }
 
+        void Do(EnsureAllCellsAreRunningUnlessCancelledCommand command, CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            foreach (var cell in _cells)
+            {
+                cell.Value.EnsureIsRunningUnlessCancelled();
+            }
+        }
+
         void OnDeploymentChanged(SolutionHead newDeployment, SolutionDefinition newSolution, CancellationToken cancellationToken)
         {
             // 0. ANALYZE CELL LAYOUT CHANGES
@@ -212,7 +235,6 @@ namespace Lokad.Cloud.AppHost
                 _cells.Remove(cell.Key);
                 cell.Value.Cancel();
             }
-            //Task.WaitAll(removed.Select(c => c.Value.Task).ToArray());
 
             // 3. UPDATE CELLS STILL PRESENT
 
