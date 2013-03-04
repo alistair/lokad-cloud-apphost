@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Deployment>
+  <Cells>
+    <Cell name="default">
+      <Assemblies name="assemblies-sha256hex" />
+      <EntryPoint typeName="Class1, MySampleProject" />
+      <Settings></Settings>
+    </Cell>
+  </Cells>
+</Deployment>

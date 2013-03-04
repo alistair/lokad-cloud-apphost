@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lokad.Cloud.AppHost.Framework", "Source\Lokad.Cloud.AppHost.Framework\Lokad.Cloud.AppHost.Framework.csproj", "{533B2099-3C96-4D88-8766-8EB24B7FA216}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lokad.Cloud.AppHost", "Source\Lokad.Cloud.AppHost\Lokad.Cloud.AppHost.csproj", "{89D98EC0-6959-4B20-A8F4-9BF19B4BCF49}"
@@ -9,6 +9,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Readme.markdown = Readme.markdown
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lokad.Cloud.AppHost.Framework.Azure", "Lokad.Cloud.AppHost.Framework.Azure\Lokad.Cloud.AppHost.Framework.Azure.csproj", "{9B26F0F6-A162-4F4C-86CB-A9BB240EC4FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0BCD2C50-E63A-46E4-84D0-4E6F016EA594}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lokad.Cloud.AppHost.Framework.Azure.Tests", "Lokad.Cloud.AppHost.Framework.Azure.Tests\Lokad.Cloud.AppHost.Framework.Azure.Tests.csproj", "{82C4EBFA-8B69-4066-978A-4435BA90AFA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySampleProject", "MySampleProject\MySampleProject.csproj", "{03F5E221-FC4F-441E-8498-C6808C9A23FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lokad.Cloud.Storage", "..\lokad-cloud-storage\Source\Lokad.Cloud.Storage\Lokad.Cloud.Storage.csproj", "{0F9244AB-3B7C-4F98-9D44-E46FBC65522C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,8 +34,27 @@ Global
 		{89D98EC0-6959-4B20-A8F4-9BF19B4BCF49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89D98EC0-6959-4B20-A8F4-9BF19B4BCF49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89D98EC0-6959-4B20-A8F4-9BF19B4BCF49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B26F0F6-A162-4F4C-86CB-A9BB240EC4FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B26F0F6-A162-4F4C-86CB-A9BB240EC4FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B26F0F6-A162-4F4C-86CB-A9BB240EC4FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B26F0F6-A162-4F4C-86CB-A9BB240EC4FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82C4EBFA-8B69-4066-978A-4435BA90AFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82C4EBFA-8B69-4066-978A-4435BA90AFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82C4EBFA-8B69-4066-978A-4435BA90AFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82C4EBFA-8B69-4066-978A-4435BA90AFA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F5E221-FC4F-441E-8498-C6808C9A23FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F5E221-FC4F-441E-8498-C6808C9A23FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F5E221-FC4F-441E-8498-C6808C9A23FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F5E221-FC4F-441E-8498-C6808C9A23FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F9244AB-3B7C-4F98-9D44-E46FBC65522C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9244AB-3B7C-4F98-9D44-E46FBC65522C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9244AB-3B7C-4F98-9D44-E46FBC65522C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F9244AB-3B7C-4F98-9D44-E46FBC65522C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82C4EBFA-8B69-4066-978A-4435BA90AFA3} = {0BCD2C50-E63A-46E4-84D0-4E6F016EA594}
 	EndGlobalSection
 EndGlobal
