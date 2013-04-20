@@ -11,6 +11,8 @@
     <AssemblyName>Lokad.Cloud.AppHost.Framework.Azure</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +34,9 @@
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Lokad.Cloud.Storage">
+      <HintPath>..\packages\Lokad.Cloud.Storage.2.6.0\lib\Lokad.Cloud.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
@@ -59,10 +64,6 @@
     <Compile Include="RoleEnvironmentHostContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\lokad-cloud-storage\Source\Lokad.Cloud.Storage\Lokad.Cloud.Storage.csproj">
-      <Project>{0f9244ab-3b7c-4f98-9d44-e46fbc65522c}</Project>
-      <Name>Lokad.Cloud.Storage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Source\Lokad.Cloud.AppHost.Framework\Lokad.Cloud.AppHost.Framework.csproj">
       <Project>{533B2099-3C96-4D88-8766-8EB24B7FA216}</Project>
       <Name>Lokad.Cloud.AppHost.Framework</Name>
@@ -75,6 +76,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
