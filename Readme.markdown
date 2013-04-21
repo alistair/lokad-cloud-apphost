@@ -1,7 +1,7 @@
 This is a blatent rip of of the work done by the guys over at lokad.
 It combines code found in multiple lokad repositories and fills in gaps
 when necessary.  It ain't produstion ready.  It ain't production tested.
-It aint certainly isn't production safe.  It will do things to you kittens
+It aint certainly isn't production safe.  It will do things to your kittens
 which would get me thrown in jail just for thinking about.
 
 This is just about making the dream, the reality.

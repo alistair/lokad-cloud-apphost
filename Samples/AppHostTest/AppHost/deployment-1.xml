@@ -1,0 +1,21 @@
+﻿<SolutionDefinition xmlns="http://schemas.lokad.com/lokad-cloud/apphost/1.0">
+  <SolutionName>testSolution</SolutionName>
+  <Cells>
+    <CellDefinition>
+      <CellName>cell-1</CellName>
+      <Assemblies>
+        <AssembliesId>App1.zip</AssembliesId>
+      </Assemblies>
+      <EntryPointTypeName>App1.EntryPoint, App1</EntryPointTypeName>
+      <SettingsXml></SettingsXml>
+    </CellDefinition>
+    <CellDefinition>
+      <CellName>cell-2</CellName>
+      <Assemblies>
+        <AssembliesId>App2.zip</AssembliesId>
+      </Assemblies>
+      <EntryPointTypeName>App2.EntryPoint, App2</EntryPointTypeName>
+      <SettingsXml></SettingsXml>
+    </CellDefinition>
+  </Cells>
+</SolutionDefinition>
